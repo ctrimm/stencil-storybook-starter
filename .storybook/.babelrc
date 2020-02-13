@@ -1,0 +1,22 @@
+{
+  "plugins": ["dynamic-import-node"],
+  "presets": [
+    "@babel/env",
+    "@babel/preset-typescript",
+  ],
+  "ignore": [
+    "node_modules"
+  ],
+  "env": {
+    "build": {
+      "ignore": [
+        "**/*.test.tsx",
+        "**/*.test.ts",
+        "**/*.story.tsx",
+        "__snapshots__",
+        "__tests__",
+        "__stories__",
+      ],
+    },
+  },
+}
