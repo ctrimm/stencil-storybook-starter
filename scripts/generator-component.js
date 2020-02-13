@@ -46,7 +46,11 @@ const createFiles = (filename) => {
 const writeToFiles = (filename) => {
   const tsxFilePath = `${process.cwd()}/src/components/${filename}/${filename}.tsx`
   const e2eFilePath = `${process.cwd()}/src/components/${filename}/${filename}.e2e.ts`
-  shell.echo(`import { Component, Prop, h } from \'@stencil\/core\';\r\n\r\n@Component({\r\n  tag: \'${filename}\',\r\n  styleUrl: \'${filename}.css\',\r\n  shadow: true\r\n})\r\nexport class MyComponent {\r\n  \/**\r\n   * The first name\r\n   *\/\r\n  \/\/ @Prop() first: string;\r\n\r\n  render() {\r\n    return <div><\/div>;\r\n  }\r\n}\r\n`).to(tsxFilePath);
+
+  className = filename.replace(/(^|\/|-)(\S)/g, s=>s.toUpperCase());
+  className = className.replace(/-/g, "");
+
+  shell.echo(`import { Component, Prop, h } from \'@stencil\/core\';\r\n\r\n@Component({\r\n  tag: \'${filename}\',\r\n  styleUrl: \'${filename}.sass\',\r\n  shadow: true\r\n})\r\nexport class ${className} {\r\n  \/**\r\n   * The new prop here\r\n   *\/\r\n  @Prop() newProphere: string;\r\n\r\n  render() {\r\n    return <div>Hello World. I am a new component!<\/div>;\r\n  }\r\n}\r\n`).to(tsxFilePath);
   shell.echo(`import { newE2EPage } from \'@stencil\/core\/testing\';\r\n\r\ndescribe(\'${filename}\', () => {\r\n  it(\'renders\', async () => {\r\n    const page = await newE2EPage();\r\n\r\n    await page.setContent(\'<${filename}><\/${filename}>\');\r\n    const element = await page.find(\'${filename}\');\r\n    expect(element).toHaveClass(\'hydrated\');\r\n  });\r\n});\r\n`).to(e2eFilePath);
   return null;
 };
